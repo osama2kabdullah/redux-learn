@@ -1,43 +1,68 @@
-const {createStore, applyMiddleware} = require('redux');
-const { default: logger } = require('redux-logger');
+const { default: axios } = require("axios");
+const { createStore, applyMiddleware } = require("redux");
+const thunk = require("redux-thunk").default;
 
 //constance values
-const ADD_TO_CART = "ADD_TO_CART";
-const GET_CART = "GET_CART";
+const URL = "https://jsonplaceholder.typicode.com/users";
+const GET_DATA_REQ = "GET_DATA_REQ";
+const GET_DATA_SUCCESS = "GET_DATA_SUCCESS";
+const GET_DATA_FAIL = "GET_DATA_FAIL";
 
-//cart state
-const initCartState = {
-  cart: ["choclate", "milk"],
-  count: 2,
+// states
+const initState = {
+  data: [],
+  isLoading: false,
+  error: null,
 };
 
-//reducer
-function cartReducer(state = initCartState, action) {
+//actions
+function getData() {
+  return { type: GET_DATA_REQ };
+}
+
+function getDataSuccess(data) {
+  return { type: GET_DATA_SUCCESS, payload: data };
+}
+
+function getDataError(error) {
+  return { type: GET_DATA_FAIL, payload: error };
+}
+
+//reducers
+function getDataReducer(state = initState, action) {
   switch (action.type) {
-    case ADD_TO_CART:
-      return { ...state, count: state.cart.length + 1, cart: [...state.cart, action.payload] };
-    case GET_CART:
-      return state;
+    case GET_DATA_REQ:
+      return { ...state, isLoading: true };
+    case GET_DATA_SUCCESS:
+      return { ...state, isLoading: false, data: action.payload };
+    case GET_DATA_FAIL:
+      return { ...state, isLoading: false, error: action.payload };
 
     default:
       return state;
   }
-};
-
-//actions
-function addToCart(item) {
-  return {
-    type: ADD_TO_CART,
-    payload: item
-  }
 }
 
-// store
-const cart_store = createStore(cartReducer, applyMiddleware(logger));
+//async action data
+function fetchData() {
+  return (dispatch) => {
+    dispatch(getData());
+    axios
+      .get(URL)
+      .then((res) => {
+        const users = res.data.map((user) => user.name);
+        dispatch(getDataSuccess(users));
+      })
+      .catch((err) => {
+        dispatch(getDataError(err.message));
+      });
+  };
+}
 
-cart_store.subscribe(() => {
-  console.log(cart_store.getState());
+//store create
+const store = createStore(getDataReducer, applyMiddleware(thunk));
+store.subscribe(() => {
+  console.log(store.getState());
 });
 
-// action dispatch
-cart_store.dispatch(addToCart('mashala'))
+store.dispatch(fetchData());
