@@ -1,0 +1,27 @@
+{
+  "name": "anisul-tutorial",
+  "version": "0.1.0",
+  "description": "this folder made for practice followed by anisul islam",
+  "main": "redux.js",
+  "scripts": {
+    "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osama2kabdullah/redux-learn.git"
+  },
+  "keywords": [
+    "\"redux\"",
+    "\"javascript-state\"",
+    "\"react-redux\""
+  ],
+  "author": "osama2kabdullah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/osama2kabdullah/redux-learn/issues"
+  },
+  "homepage": "https://github.com/osama2kabdullah/redux-learn#readme",
+  "dependencies": {
+    "redux": "^4.2.1"
+  }
+}
