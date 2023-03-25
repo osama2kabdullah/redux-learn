@@ -1,61 +1,43 @@
-const { createStore } = require("redux");
-// CONSTACE VALUES
-const INCREMENT = "INCREMENT";
-const DECREMENT = "DECREMENT";
-const RESET = "RESET";
-const INCREMENT_BY_VALUE = "INCREMENT_BY_VALUE";
-const ADD_USER = "ADD_USER";
+const {createStore, applyMiddleware} = require('redux');
+const { default: logger } = require('redux-logger');
 
-//state
-const counterState = {
-  count: 0,
-  users: ["osama", "hasan"],
+//constance values
+const ADD_TO_CART = "ADD_TO_CART";
+const GET_CART = "GET_CART";
+
+//cart state
+const initCartState = {
+  cart: ["choclate", "milk"],
+  count: 2,
 };
 
 //reducer
-function counterReducer(state = counterState, action) {
+function cartReducer(state = initCartState, action) {
   switch (action.type) {
-    case INCREMENT:
-      return { count: state.count + 1 };
-    case DECREMENT:
-      return { count: state.count - 1 };
-    case RESET:
-      return { ...state, count: 0 };
-    case INCREMENT_BY_VALUE:
-      return { ...state, count: state.count + action.payload };
-    case ADD_USER:
-      return {
-        ...state,
-        count: state.users.length + 1,
-        users: [...state.users, action.payload],
-      };
+    case ADD_TO_CART:
+      return { ...state, count: state.cart.length + 1, cart: [...state.cart, action.payload] };
+    case GET_CART:
+      return state;
+
     default:
-      state;
+      return state;
+  }
+};
+
+//actions
+function addToCart(item) {
+  return {
+    type: ADD_TO_CART,
+    payload: item
   }
 }
 
-//action
-function increament() {
-  return { type: INCREMENT };
-}
-function decreament() {
-  return { type: DECREMENT };
-}
-function resetState() {
-  return { type: RESET };
-}
-function incByValue(value) {
-  return { type: INCREMENT_BY_VALUE, payload: value };
-}
-function addUser(name) {
-  return { type: ADD_USER, payload: name };
-}
-
 // store
-const store = createStore(counterReducer);
-store.subscribe(() => {
-  console.log(store.getState());
+const cart_store = createStore(cartReducer, applyMiddleware(logger));
+
+cart_store.subscribe(() => {
+  console.log(cart_store.getState());
 });
-//dispatch
-store.dispatch(addUser("rabbi"));
-store.dispatch(addUser("juba"));
+
+// action dispatch
+cart_store.dispatch(addToCart('mashala'))

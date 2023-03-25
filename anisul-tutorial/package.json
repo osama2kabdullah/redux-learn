@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/osama2kabdullah/redux-learn#readme",
   "dependencies": {
-    "redux": "^4.2.1"
+    "redux": "^4.2.1",
+    "redux-logger": "^3.0.6"
   }
 }
