@@ -1,6 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
 import CounterView from "./feature/counter/CounterView";
+import PostView from "./feature/posts/PostView";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /**
  * Plan
@@ -15,12 +16,11 @@ import CounterView from "./feature/counter/CounterView";
  */
 
 function App() {
-  const states = useSelector((state) => state);
-  const dispatch = useDispatch();
 
   return (
     <div>
       <CounterView/>
+      <PostView/>
     </div>
   );
 }
