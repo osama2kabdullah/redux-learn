@@ -1,8 +1,6 @@
-import { useEffect } from "react";
-import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
-import { getAllTodos } from "./components/todosActions";
+import CounterView from "./feature/counter/CounterView";
 
 /**
  * Plan
@@ -17,29 +15,12 @@ import { getAllTodos } from "./components/todosActions";
  */
 
 function App() {
-  const { isLoading, todo, error } = useSelector((state) => state);
+  const states = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(getAllTodos());
-  }, []);
   return (
     <div>
-      <h1>TODO APP</h1>
-      <small>{isLoading && "Loading ..."}</small>
-      <small>{error && `${error}`}</small>
-      <Form>
-        {todo.map((todo) => (
-          <div key={todo.id}>
-            <Form.Check
-              type={"checkbox"}
-              id={todo.id}
-              label={todo.title}
-              checked={todo.completed}
-            />
-          </div>
-        ))}
-      </Form>
+      <CounterView/>
     </div>
   );
 }
